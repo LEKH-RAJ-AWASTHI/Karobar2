@@ -1,0 +1,23 @@
+<div class="max-w-3xl mx-auto space-y-8" *ngIf="user">
+  <div>
+    <h2 class="text-3xl font-bold tracking-tight text-on-surface">Update Account Protocol</h2>
+    <p class="text-on-surface-variant mt-1">Reviewing profile data and credentials for <span class="font-bold text-primary italic">{{user.fullName}}</span></p>
+  </div>
+
+  <app-user-form 
+    [isCreate]="false" 
+    [initialData]="user"
+    (formSubmit)="onUpdate($event)"
+    (onCancel)="goBack()">
+  </app-user-form>
+
+  <div *ngIf="errorMessage" class="p-4 bg-error-container/20 border border-error/20 rounded-xl flex items-center gap-3">
+    <span class="material-symbols-outlined text-error">warning</span>
+    <p class="text-xs font-bold text-on-error-container uppercase tracking-widest">{{errorMessage}}</p>
+  </div>
+</div>
+
+<div *ngIf="loading" class="flex flex-col items-center justify-center p-20 text-primary">
+   <div class="animate-spin h-10 w-10 border-4 border-primary border-t-transparent rounded-full mb-4"></div>
+   <p class="text-xs font-bold uppercase tracking-widest">Accessing Secure Records...</p>
+</div>

@@ -1,0 +1,11 @@
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Domain/bin/Debug/net10.0/Karobar.Domain.deps.json
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Domain/bin/Debug/net10.0/Karobar.Domain.dll
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Domain/bin/Debug/net10.0/Karobar.Domain.pdb
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Domain/obj/Debug/net10.0/Karobar.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Domain/obj/Debug/net10.0/Karobar.Domain.AssemblyInfoInputs.cache
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Domain/obj/Debug/net10.0/Karobar.Domain.AssemblyInfo.cs
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Domain/obj/Debug/net10.0/Karobar.Domain.csproj.CoreCompileInputs.cache
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Domain/obj/Debug/net10.0/Karobar.Domain.dll
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Domain/obj/Debug/net10.0/refint/Karobar.Domain.dll
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Domain/obj/Debug/net10.0/Karobar.Domain.pdb
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Domain/obj/Debug/net10.0/ref/Karobar.Domain.dll

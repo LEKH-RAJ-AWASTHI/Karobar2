@@ -1,0 +1,224 @@
+<div class="animate-fade-in space-y-6">
+
+  <!-- Back Navigation -->
+  <div>
+    <a [routerLink]="['/ledgers']"
+      class="text-sm font-semibold text-on-surface-variant hover:text-primary flex items-center gap-1 w-max transition-colors">
+      <span class="material-symbols-outlined text-sm">arrow_back</span>
+      Back to Ledgers
+    </a>
+  </div>
+
+  <!-- Balance Loading Skeleton -->
+  <div *ngIf="loadingBalance()" class="bg-surface-container-lowest rounded-3xl p-8 border border-outline-variant/10 animate-pulse">
+    <div class="h-5 w-40 bg-surface-container rounded mb-3"></div>
+    <div class="h-10 w-56 bg-surface-container rounded mb-2"></div>
+    <div class="h-4 w-24 bg-surface-container rounded"></div>
+  </div>
+
+  <!-- Balance Error -->
+  <div *ngIf="balanceError() && !loadingBalance()"
+    class="bg-error-container/20 border border-error/20 text-error rounded-2xl px-6 py-4 flex items-center gap-3">
+    <span class="material-symbols-outlined">error</span>
+    <span class="text-sm font-semibold">{{ balanceError() }}</span>
+  </div>
+
+  <!-- Header Card -->
+  <div *ngIf="balance() && !loadingBalance()"
+    class="bg-gradient-to-br from-primary to-indigo-800 rounded-3xl p-8 text-white relative overflow-hidden">
+    <!-- Background decoration -->
+    <div class="absolute right-0 bottom-0 opacity-10 translate-y-1/4 translate-x-1/4 pointer-events-none">
+      <span class="material-symbols-outlined text-[160px]">account_balance_wallet</span>
+    </div>
+
+    <div class="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <div>
+        <p class="text-[10px] uppercase tracking-widest font-bold opacity-70 mb-1">General Ledger Account</p>
+        <h1 class="text-3xl font-bold mb-3">{{ balance()!.ledgerName }}</h1>
+        <div class="flex items-center gap-3 flex-wrap">
+          <div class="flex items-center gap-1.5 bg-white/20 rounded-full px-3 py-1 text-xs font-bold">
+            <span class="material-symbols-outlined text-xs">payments</span>
+            ID: {{ ledgerId().slice(0, 8) }}…
+          </div>
+        </div>
+      </div>
+      <div class="text-right">
+        <p class="text-[10px] uppercase tracking-widest font-bold opacity-70 mb-1">Current Balance</p>
+        <p class="text-4xl font-bold tabular-nums"
+           [ngClass]="balance()!.balance < 0 ? 'text-red-300' : 'text-white'">
+          {{ formatCurrency(balance()!.balance) }}
+        </p>
+        <div class="flex gap-4 mt-3 justify-end text-xs opacity-80">
+          <span>Total Debit: ₹{{ balance()!.totalDebit | number:'1.2-2' }}</span>
+          <span>Total Credit: ₹{{ balance()!.totalCredit | number:'1.2-2' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Statement Section -->
+  <div class="bg-surface-container-lowest rounded-3xl border border-outline-variant/10 overflow-hidden shadow-sm">
+
+    <!-- Statement Header + Filters -->
+    <div class="px-8 py-6 border-b border-outline-variant/10">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <h2 class="text-lg font-bold text-on-surface">Account Statement</h2>
+          <p class="text-xs text-on-surface-variant mt-0.5">Detailed transaction history with running balance.</p>
+        </div>
+        <button (click)="loadBalance()"
+          class="flex items-center gap-1.5 text-xs font-bold text-primary hover:bg-primary-fixed/10 px-3 py-2 rounded-lg transition-colors">
+          <span class="material-symbols-outlined text-sm">refresh</span>
+          Refresh
+        </button>
+      </div>
+
+      <!-- Date Filters -->
+      <form [formGroup]="filterForm" (ngSubmit)="applyFilters()" class="mt-5 flex flex-wrap items-end gap-4">
+        <div class="flex flex-col gap-1">
+          <label class="text-[10px] uppercase tracking-widest font-bold text-on-surface-variant">From Date</label>
+          <input formControlName="fromDate" type="date" id="statement-from-date"
+            class="bg-surface-container-low border border-outline-variant/20 rounded-xl px-4 py-2.5 text-sm font-medium text-on-surface outline-none focus:ring-2 focus:ring-primary" />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label class="text-[10px] uppercase tracking-widest font-bold text-on-surface-variant">To Date</label>
+          <input formControlName="toDate" type="date" id="statement-to-date"
+            class="bg-surface-container-low border border-outline-variant/20 rounded-xl px-4 py-2.5 text-sm font-medium text-on-surface outline-none focus:ring-2 focus:ring-primary" />
+        </div>
+        <div class="flex gap-2">
+          <button type="submit"
+            class="px-5 py-2.5 bg-primary text-white text-xs font-bold rounded-xl hover:bg-primary-container transition-colors flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-sm">filter_alt</span>
+            Apply
+          </button>
+          <button type="button" (click)="clearFilters()"
+            class="px-5 py-2.5 bg-surface-container text-on-surface text-xs font-bold rounded-xl hover:bg-surface-container-high transition-colors">
+            Clear
+          </button>
+        </div>
+      </form>
+
+      <!-- Opening/Closing Balance Pills -->
+      <div *ngIf="statement() && !loadingStatement()" class="flex flex-wrap gap-3 mt-4">
+        <div class="bg-surface-container-low rounded-xl px-4 py-2 text-xs flex items-center gap-2">
+          <span class="font-bold text-on-surface-variant uppercase tracking-wider">Opening Balance</span>
+          <span class="font-bold" [ngClass]="getBalanceClass(statement()!.openingBalance)">
+            {{ formatCurrency(statement()!.openingBalance) }}
+          </span>
+        </div>
+        <div class="bg-surface-container-low rounded-xl px-4 py-2 text-xs flex items-center gap-2">
+          <span class="font-bold text-on-surface-variant uppercase tracking-wider">Closing Balance</span>
+          <span class="font-bold" [ngClass]="getBalanceClass(statement()!.closingBalance)">
+            {{ formatCurrency(statement()!.closingBalance) }}
+          </span>
+        </div>
+        <div class="bg-surface-container-low rounded-xl px-4 py-2 text-xs flex items-center gap-2">
+          <span class="font-bold text-on-surface-variant uppercase tracking-wider">Entries</span>
+          <span class="font-bold text-on-surface">{{ statement()!.totalCount }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Statement Table -->
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="bg-surface-container-low">
+            <th class="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Date</th>
+            <th class="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Ref No.</th>
+            <th class="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Description</th>
+            <th class="px-6 py-4 text-right text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Debit</th>
+            <th class="px-6 py-4 text-right text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Credit</th>
+            <th class="px-6 py-4 text-right text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Balance</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-outline-variant/5">
+
+          <!-- Data rows -->
+          <ng-container *ngIf="statement() && !loadingStatement()">
+            <tr *ngFor="let line of statement()!.lines; let i = index"
+              class="hover:bg-surface-container-low/40 transition-colors">
+              <td class="px-6 py-4 text-sm text-on-surface-variant font-medium whitespace-nowrap">
+                {{ line.date | date:'dd MMM yyyy' }}
+              </td>
+              <td class="px-6 py-4">
+                <span class="text-xs font-mono font-bold bg-surface-container text-on-surface-variant px-2 py-0.5 rounded">
+                  {{ line.referenceNo || '—' }}
+                </span>
+              </td>
+              <td class="px-6 py-4 text-sm text-on-surface max-w-xs">
+                <span class="line-clamp-1">{{ line.description || '—' }}</span>
+              </td>
+              <td class="px-6 py-4 text-right font-mono font-bold tabular-nums text-sm">
+                <span *ngIf="line.debit > 0" class="text-on-surface">₹{{ line.debit | number:'1.2-2' }}</span>
+                <span *ngIf="line.debit === 0" class="text-on-surface-variant/40">—</span>
+              </td>
+              <td class="px-6 py-4 text-right font-mono font-bold tabular-nums text-sm">
+                <span *ngIf="line.credit > 0" class="text-emerald-600">₹{{ line.credit | number:'1.2-2' }}</span>
+                <span *ngIf="line.credit === 0" class="text-on-surface-variant/40">—</span>
+              </td>
+              <td class="px-6 py-4 text-right font-mono font-bold tabular-nums text-sm"
+                  [ngClass]="getRunningBalanceClass(line.runningBalance)">
+                {{ formatCurrency(line.runningBalance) }}
+              </td>
+            </tr>
+          </ng-container>
+
+          <!-- Loading rows -->
+          <tr *ngIf="loadingStatement()">
+            <td colspan="6" class="px-6 py-16 text-center">
+              <div class="animate-spin h-8 w-8 border-2 border-primary border-t-transparent rounded-full mx-auto mb-3"></div>
+              <p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Loading statement...</p>
+            </td>
+          </tr>
+
+          <!-- Empty state -->
+          <tr *ngIf="!loadingStatement() && statement()?.lines?.length === 0">
+            <td colspan="6" class="px-6 py-16 text-center">
+              <span class="material-symbols-outlined text-5xl text-outline mb-3 block">receipt_long</span>
+              <p class="text-on-surface font-semibold text-sm mb-1">No transactions found</p>
+              <p class="text-on-surface-variant text-xs">Try adjusting the date range or create a transaction for this ledger.</p>
+            </td>
+          </tr>
+
+          <!-- Statement error -->
+          <tr *ngIf="statementError() && !loadingStatement()">
+            <td colspan="6" class="px-6 py-8 text-center text-error text-sm font-semibold">
+              <span class="material-symbols-outlined text-3xl block mb-2">error_outline</span>
+              {{ statementError() }}
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination Footer -->
+    <div *ngIf="totalPages > 1" class="px-8 py-4 border-t border-outline-variant/10 flex items-center justify-between">
+      <p class="text-xs text-on-surface-variant">
+        Page <span class="font-bold text-on-surface">{{ currentPage() }}</span> of
+        <span class="font-bold text-on-surface">{{ totalPages }}</span> &mdash;
+        {{ statement()!.totalCount }} total entries
+      </p>
+      <div class="flex items-center gap-1">
+        <button (click)="goToPage(1)" [disabled]="currentPage() === 1"
+          class="p-2 rounded-lg hover:bg-surface-container disabled:opacity-30 disabled:cursor-not-allowed transition-colors text-xs font-bold">
+          «
+        </button>
+        <button (click)="goToPage(currentPage() - 1)" [disabled]="currentPage() === 1"
+          class="p-2 rounded-lg hover:bg-surface-container disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
+          <span class="material-symbols-outlined text-sm">chevron_left</span>
+        </button>
+        <button (click)="goToPage(currentPage() + 1)" [disabled]="currentPage() === totalPages"
+          class="p-2 rounded-lg hover:bg-surface-container disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
+          <span class="material-symbols-outlined text-sm">chevron_right</span>
+        </button>
+        <button (click)="goToPage(totalPages)" [disabled]="currentPage() === totalPages"
+          class="p-2 rounded-lg hover:bg-surface-container disabled:opacity-30 disabled:cursor-not-allowed transition-colors text-xs font-bold">
+          »
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

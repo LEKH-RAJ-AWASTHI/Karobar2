@@ -1,0 +1,130 @@
+<div class="animate-fade-in space-y-8">
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+    <div>
+      <h2 class="text-3xl font-bold tracking-tight text-on-surface">General Ledger</h2>
+      <p class="text-on-surface-variant mt-1">All financial accounts — balances calculated from real transactions.</p>
+    </div>
+    <button
+      [routerLink]="['/ledgers/new']"
+      class="px-6 py-2.5 bg-gradient-to-r from-primary to-primary-container text-white text-sm font-bold rounded-lg hover:shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-2 w-max">
+      <span class="material-symbols-outlined text-lg">add_circle</span>
+      Create Ledger
+    </button>
+  </div>
+
+  <!-- Filters -->
+  <div class="bg-surface-container-low/30 px-6 py-4 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div class="relative w-full md:w-96">
+      <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+      <input
+        [formControl]="searchControl"
+        class="w-full bg-surface-container-low border-none rounded-full py-2.5 pl-10 pr-4 text-xs tracking-wider font-semibold focus:ring-2 focus:ring-primary-fixed uppercase placeholder-secondary outline-none"
+        placeholder="SEARCH LEDGER BY NAME..." type="text" />
+    </div>
+    <div class="flex items-center gap-3">
+      <select
+        [formControl]="selectedType"
+        class="bg-surface-container-low border-none rounded-xl px-4 py-2.5 text-sm font-semibold text-on-surface focus:ring-2 focus:ring-primary-fixed outline-none cursor-pointer">
+        <option value="">All Types</option>
+        <option *ngFor="let t of ledgerTypes" [value]="t">{{ t }}</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm border border-outline-variant/10">
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="bg-surface-container-low">
+            <th class="px-8 py-4 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Ledger Name</th>
+            <th class="px-8 py-4 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Type</th>
+            <th class="px-8 py-4 text-right text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Balance</th>
+            <th class="px-8 py-4 text-right text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-outline-variant/5">
+
+          <!-- Data rows -->
+          <tr *ngFor="let ledger of ledgers()" class="hover:bg-surface-container-low/50 transition-colors">
+            <td class="px-8 py-5">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-full bg-primary-fixed flex items-center justify-center font-bold text-xs text-on-primary-fixed">
+                  {{ getInitials(ledger.name) }}
+                </div>
+                <span class="text-sm font-semibold text-on-surface">{{ ledger.name }}</span>
+              </div>
+            </td>
+            <td class="px-8 py-5">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold" [ngClass]="getTypeColor(ledger.type)">
+                <span class="material-symbols-outlined text-xs">{{ getTypeIcon(ledger.type) }}</span>
+                {{ resolveTypeName(ledger.type) }}
+              </span>
+            </td>
+            <td class="px-8 py-5 text-right font-bold tabular-nums"
+                [ngClass]="ledger.balance < 0 ? 'text-error' : 'text-on-surface'">
+              <span>{{ formatBalance(ledger.balance) }}</span>
+            </td>
+            <td class="px-8 py-5 text-right">
+              <button
+                [routerLink]="['/ledgers', ledger.id]"
+                class="px-4 py-1.5 text-xs font-bold text-primary hover:bg-primary-fixed/20 rounded-lg transition-colors">
+                View Statement
+              </button>
+            </td>
+          </tr>
+
+          <!-- Loading -->
+          <tr *ngIf="loading()">
+            <td colspan="4" class="px-8 py-16 text-center">
+              <div class="animate-spin h-8 w-8 border-2 border-primary border-t-transparent rounded-full mx-auto mb-3"></div>
+              <p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Loading ledgers...</p>
+            </td>
+          </tr>
+
+          <!-- Empty state -->
+          <tr *ngIf="!loading() && ledgers().length === 0">
+            <td colspan="4" class="px-8 py-16 text-center">
+              <span class="material-symbols-outlined text-5xl text-outline mb-3 block">account_balance_wallet</span>
+              <p class="text-on-surface font-semibold text-sm mb-1">No ledgers yet</p>
+              <p class="text-on-surface-variant text-xs mb-4">Create your first ledger to start tracking balances.</p>
+              <button [routerLink]="['/ledgers/new']"
+                class="px-5 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary-container transition-colors inline-flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-sm">add_circle</span>
+                Create Ledger
+              </button>
+            </td>
+          </tr>
+
+          <!-- Error -->
+          <tr *ngIf="errorMessage()">
+            <td colspan="4" class="px-8 py-8 text-center text-error text-sm font-medium">
+              <span class="material-symbols-outlined text-3xl block mb-2">error_outline</span>
+              {{ errorMessage() }}
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div *ngIf="totalPages > 1" class="px-8 py-4 border-t border-outline-variant/10 flex items-center justify-between">
+      <p class="text-xs text-on-surface-variant">
+        Page {{ currentPage() }} of {{ totalPages }}
+        <span class="ml-1 text-on-surface font-bold">({{ totalCount() }} ledgers)</span>
+      </p>
+      <div class="flex items-center gap-2">
+        <button (click)="goToPage(currentPage() - 1)" [disabled]="currentPage() === 1"
+          class="p-2 rounded-lg hover:bg-surface-container disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
+          <span class="material-symbols-outlined text-sm">chevron_left</span>
+        </button>
+        <button (click)="goToPage(currentPage() + 1)" [disabled]="currentPage() === totalPages"
+          class="p-2 rounded-lg hover:bg-surface-container disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
+          <span class="material-symbols-outlined text-sm">chevron_right</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

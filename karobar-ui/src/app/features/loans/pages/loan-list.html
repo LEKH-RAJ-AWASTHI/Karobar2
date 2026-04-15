@@ -1,0 +1,79 @@
+<div class="space-y-8 animate-fade-in">
+  <div class="flex justify-between items-end">
+    <div>
+      <h2 class="text-3xl font-bold tracking-tight text-on-surface mb-2">Loan Management</h2>
+      <p class="text-slate-500 font-medium">Track and manage individual farmer loans and interest accruals.</p>
+    </div>
+    <button [routerLink]="['new']" class="bg-gradient-to-r from-primary to-primary-container text-white px-6 py-3 rounded-xl font-semibold flex items-center gap-2 shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform">
+      <span class="material-symbols-outlined text-lg">add_circle</span>
+      Issue New Loan
+    </button>
+  </div>
+
+  <div class="bg-surface-container-low p-4 rounded-xl flex items-center justify-between">
+    <div class="flex items-center gap-4 flex-1 max-w-md">
+      <div class="relative w-full">
+        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+        <input 
+          [(ngModel)]="searchTerm"
+          (input)="onSearch()"
+          class="w-full bg-white border border-outline-variant/10 rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary/20 outline-none" 
+          placeholder="Search by farmer name..."
+        />
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm border border-outline-variant/10">
+    <div *ngIf="loading" class="p-12 flex justify-center items-center">
+      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+    </div>
+
+    <table *ngIf="!loading && filteredLoans.length > 0" class="w-full text-left border-collapse">
+      <thead>
+        <tr class="bg-surface-container-low/50">
+          <th class="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-secondary">Farmer Name</th>
+          <th class="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-secondary">Principal</th>
+          <th class="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-secondary">Rate (%)</th>
+          <th class="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-secondary text-right">Outstanding</th>
+          <th class="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-secondary text-center">Status</th>
+          <th class="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-secondary text-right">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-50">
+        <tr *ngFor="let loan of filteredLoans" class="hover:bg-surface-container-low/30 transition-colors group">
+          <td class="px-6 py-5">
+            <div class="font-semibold text-on-surface">{{ loan.farmerName }}</div>
+            <div class="text-[10px] text-slate-400 font-mono mt-1">Start: {{ loan.startDate | date }}</div>
+          </td>
+          <td class="px-6 py-5 font-mono text-on-surface">₹{{ loan.principalAmount | number:'1.2-2' }}</td>
+          <td class="px-6 py-5">
+            <span class="px-2 py-1 rounded bg-slate-100 text-slate-600 text-xs font-bold">{{ loan.interestRate }}%</span>
+          </td>
+          <td class="px-6 py-5 text-right font-bold text-primary tabular-nums">₹{{ loan.outstandingBalance | number:'1.2-2' }}</td>
+          <td class="px-6 py-5 text-center">
+            <span 
+              [class.bg-emerald-50]="loan.status === 'Active'"
+              [class.text-emerald-600]="loan.status === 'Active'"
+              [class.bg-slate-100]="loan.status === 'Closed'"
+              [class.text-slate-400]="loan.status === 'Closed'"
+              class="px-2 py-1 rounded-md text-[10px] font-bold uppercase"
+            >
+              {{ loan.status }}
+            </span>
+          </td>
+          <td class="px-6 py-5 text-right">
+            <button [routerLink]="[loan.id]" class="text-primary font-bold text-xs hover:underline decoration-2 underline-offset-4">View Details</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div *ngIf="!loading && filteredLoans.length === 0" class="p-20 text-center">
+      <div class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
+        <span class="material-symbols-outlined text-slate-300 text-3xl">account_balance_wallet</span>
+      </div>
+      <p class="text-slate-400 font-medium">No loans found.</p>
+    </div>
+  </div>
+</div>

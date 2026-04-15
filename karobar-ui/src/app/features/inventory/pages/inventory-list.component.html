@@ -1,0 +1,105 @@
+<div class="space-y-8 animate-fade-in-up">
+    <!-- Header Section -->
+    <div class="flex justify-between items-end">
+        <div>
+            <h2 class="text-3xl font-bold tracking-tight text-on-surface mb-2">Inventory Management</h2>
+            <p class="text-slate-500 font-medium">Real-time stock summary based on transaction activity.</p>
+        </div>
+        <div class="bg-surface-container-low px-4 py-3 rounded-2xl flex items-center gap-3 border border-outline-variant/10">
+            <span class="material-symbols-outlined text-primary">inventory</span>
+            <div class="text-right">
+                <div class="text-[10px] uppercase font-bold text-slate-400 tracking-widest">Total Products</div>
+                <div class="text-lg font-bold text-on-surface">{{ stocks.length }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters and Search -->
+    <div class="bg-surface-container-low p-4 rounded-xl flex items-center justify-between">
+        <div class="flex items-center gap-4 flex-1 max-w-md">
+            <div class="relative w-full">
+                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+                <input 
+                    [(ngModel)]="searchTerm"
+                    (input)="onSearch()"
+                    class="w-full bg-white border border-outline-variant/10 rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary/20 outline-none" 
+                    placeholder="Filter products..."
+                />
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <button (click)="fetchStockSummary()" class="p-2 text-slate-500 hover:bg-white rounded-lg transition-colors" title="Refresh">
+                <span class="material-symbols-outlined">refresh</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Inventory Table -->
+    <div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm border border-outline-variant/10">
+        <div *ngIf="loading" class="p-20 flex flex-col items-center justify-center">
+            <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-primary mb-4"></div>
+            <p class="text-slate-400 font-medium">Updating inventory details...</p>
+        </div>
+
+        <table *ngIf="!loading && filteredStocks.length > 0" class="w-full text-left border-collapse">
+            <thead>
+                <tr class="bg-slate-50">
+                    <th (click)="onSort('productName')" class="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-secondary cursor-pointer hover:text-primary">Product Name</th>
+                    <th class="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-secondary">Ledger ID</th>
+                    <th (click)="onSort('quantityInKg')" class="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-secondary text-right cursor-pointer hover:text-primary">Stock Quantity</th>
+                    <th class="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-secondary text-center">Status</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-50">
+                <tr *ngFor="let stock of filteredStocks" class="hover:bg-surface-container-low/30 transition-colors group">
+                    <td class="px-6 py-5">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-primary/5 flex items-center justify-center text-primary">
+                                <span class="material-symbols-outlined">package</span>
+                            </div>
+                            <span class="font-bold text-on-surface">{{ stock.productName }}</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-5 font-mono text-[11px] text-slate-400">#{{ stock.ledgerId | slice:0:8 }}</td>
+                    <td class="px-6 py-5 text-right">
+                        <div class="text-lg font-bold text-on-surface tabular-nums">
+                            {{ stock.quantityInKg | number:'1.0-2' }} <span class="text-xs text-slate-400 font-medium ml-1">kg</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-5 text-center">
+                        <span 
+                            [class.bg-red-50]="stock.quantityInKg <= 50" 
+                            [class.text-red-600]="stock.quantityInKg <= 50"
+                            [class.bg-emerald-50]="stock.quantityInKg > 50" 
+                            [class.text-emerald-600]="stock.quantityInKg > 50"
+                            class="px-3 py-1.5 rounded-xl text-[10px] font-bold uppercase"
+                        >
+                            {{ stock.quantityInKg <= 50 ? 'Low Stock' : 'Optimal' }}
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Empty State -->
+        <div *ngIf="!loading && filteredStocks.length === 0" class="p-20 text-center">
+            <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span class="material-symbols-outlined text-slate-300 text-4xl">inventory_2</span>
+            </div>
+            <h3 class="text-xl font-bold text-on-surface mb-2">No items in stock</h3>
+            <p class="text-slate-400 max-w-sm mx-auto">Purchase or sales transactions will automatically update this inventory projection.</p>
+        </div>
+    </div>
+
+    <!-- Future Expansion Note -->
+    <div class="p-6 bg-primary-fixed-dim/10 rounded-2xl border border-primary-fixed/20 flex gap-4 items-start">
+        <span class="material-symbols-outlined text-primary mt-0.5">info</span>
+        <div>
+            <h4 class="text-sm font-bold text-on-primary-fixed-variant mb-1">About Inventory Projections</h4>
+            <p class="text-[11px] text-slate-500 leading-relaxed">
+                Inventory is a read-only projection derived from ledger transactions. 
+                Values represent real-time quantities in kilograms after balancing all incoming and outgoing movements.
+            </p>
+        </div>
+    </div>
+</div>

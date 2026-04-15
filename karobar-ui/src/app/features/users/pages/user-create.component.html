@@ -1,0 +1,17 @@
+<div class="max-w-3xl mx-auto space-y-8">
+  <div>
+    <h2 class="text-3xl font-bold tracking-tight text-on-surface">Onboard Team Member</h2>
+    <p class="text-on-surface-variant mt-1">Configure credentials and define the system access level.</p>
+  </div>
+  
+  <app-user-form 
+    [isCreate]="true" 
+    (formSubmit)="onSave($event)"
+    (onCancel)="goBack()">
+  </app-user-form>
+  
+  <div *ngIf="errorMessage" class="p-4 bg-error-container/20 border border-error/20 rounded-xl flex items-center gap-3">
+    <span class="material-symbols-outlined text-error">warning</span>
+    <p class="text-xs font-bold text-on-error-container uppercase tracking-widest">{{errorMessage}}</p>
+  </div>
+</div>

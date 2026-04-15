@@ -1,0 +1,114 @@
+<div class="max-w-4xl mx-auto py-8 animate-fade-in-up">
+  <div class="mb-6">
+    <a [routerLink]="['/transactions']" class="text-sm font-semibold text-slate-500 hover:text-primary flex items-center gap-1 w-max transition-colors">
+      <span class="material-symbols-outlined text-sm">arrow_back</span>
+      Back to Transactions
+    </a>
+  </div>
+
+  <div class="bg-surface-container-lowest rounded-3xl shadow-sm border border-outline-variant/10 overflow-hidden">
+    <div class="p-8 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50">
+      <div>
+        <h2 class="text-2xl font-bold text-on-surface">New Journal Entry</h2>
+        <p class="text-slate-500 text-sm mt-1">Record a multi-line transaction entry securely.</p>
+      </div>
+      <div class="text-right">
+         <div class="text-[10px] uppercase font-bold text-slate-400 tracking-widest">Entry Ref</div>
+         <div class="text-lg font-mono text-on-surface mt-1">TRN-90925</div>
+      </div>
+    </div>
+    
+    <div class="p-8 space-y-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-6 border-b border-dashed border-slate-200">
+        <div class="space-y-2">
+          <label class="text-[10px] uppercase tracking-widest font-bold text-secondary">Transaction Date</label>
+          <input class="w-full border-none bg-surface-container-low rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary-fixed transition-all outline-none text-on-surface cursor-pointer font-medium" type="date" value="2024-10-25" />
+        </div>
+        <div class="space-y-2">
+          <label class="text-[10px] uppercase tracking-widest font-bold text-secondary">Description / Memo</label>
+          <input class="w-full border-none bg-surface-container-low rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary-fixed transition-all outline-none text-on-surface placeholder:text-slate-400 font-medium" placeholder="E.g. Invoice Payment #00129" type="text" />
+        </div>
+      </div>
+
+      <!-- Lines Grid -->
+      <div class="space-y-4">
+         <div class="flex justify-between items-end">
+            <label class="text-[10px] uppercase tracking-widest font-bold text-secondary">Entry Lines (Debits & Credits)</label>
+            <button class="text-xs font-bold text-primary hover:bg-primary-container/20 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm">add</span> Add Line
+            </button>
+         </div>
+         
+         <!-- Line 1 -->
+         <div class="flex gap-4 items-center bg-white border border-slate-200 rounded-xl p-3 hover:border-primary/40 transition-colors">
+            <div class="w-8 h-8 rounded-full bg-slate-100 flex justify-center items-center font-bold text-slate-400 text-xs shrink-0">1</div>
+            <div class="flex-1">
+              <select class="w-full border-none bg-transparent px-2 py-1 outline-none text-sm font-semibold text-on-surface cursor-pointer">
+                <option selected>Bank Account (Asset)</option>
+                <option>Accounts Receivable</option>
+              </select>
+            </div>
+            <div class="w-32 relative">
+              <span class="absolute left-2 top-1/2 -translate-y-1/2 text-slate-400 text-sm">₹</span>
+              <input class="w-full bg-surface-container-low border-none rounded-lg py-2 pl-6 pr-2 text-sm text-right focus:ring-2 focus:ring-primary-fixed font-mono" placeholder="Debit" value="12000.00" />
+            </div>
+            <div class="w-32 relative">
+              <span class="absolute left-2 top-1/2 -translate-y-1/2 text-slate-400 text-sm">₹</span>
+              <input class="w-full bg-slate-50 border-none rounded-lg py-2 pl-6 pr-2 text-sm text-right font-mono text-slate-400" placeholder="Credit" disabled />
+            </div>
+            <button class="text-slate-300 hover:text-error transition-colors p-1"><span class="material-symbols-outlined text-lg">delete</span></button>
+         </div>
+
+         <!-- Line 2 -->
+         <div class="flex gap-4 items-center bg-white border border-slate-200 rounded-xl p-3 hover:border-primary/40 transition-colors">
+            <div class="w-8 h-8 rounded-full bg-slate-100 flex justify-center items-center font-bold text-slate-400 text-xs shrink-0">2</div>
+            <div class="flex-1">
+               <select class="w-full border-none bg-transparent px-2 py-1 outline-none text-sm font-semibold text-on-surface cursor-pointer">
+                <option>Bank Account (Asset)</option>
+                <option selected>Accounts Receivable</option>
+              </select>
+            </div>
+            <div class="w-32 relative">
+              <span class="absolute left-2 top-1/2 -translate-y-1/2 text-slate-400 text-sm">₹</span>
+              <input class="w-full bg-slate-50 border-none rounded-lg py-2 pl-6 pr-2 text-sm text-right font-mono text-slate-400" placeholder="Debit" disabled />
+            </div>
+            <div class="w-32 relative">
+              <span class="absolute left-2 top-1/2 -translate-y-1/2 text-slate-400 text-sm">₹</span>
+              <input class="w-full bg-surface-container-low border-none rounded-lg py-2 pl-6 pr-2 text-sm text-right focus:ring-2 focus:ring-primary-fixed font-mono" placeholder="Credit" value="12000.00" />
+            </div>
+            <button class="text-slate-300 hover:text-error transition-colors p-1"><span class="material-symbols-outlined text-lg">delete</span></button>
+         </div>
+      </div>
+
+      <!-- Total Validations -->
+      <div class="flex justify-end gap-12 bg-slate-50 p-4 rounded-xl border border-slate-100">
+         <div class="text-right">
+            <p class="text-[10px] uppercase font-bold text-slate-400 tracking-widest mb-1">Total Debit</p>
+            <div class="text-lg font-mono text-primary font-bold">₹ 12,000.00</div>
+         </div>
+         <div class="text-right">
+            <p class="text-[10px] uppercase font-bold text-slate-400 tracking-widest mb-1">Total Credit</p>
+            <div class="text-lg font-mono text-primary font-bold">₹ 12,000.00</div>
+         </div>
+         <div class="text-right border-l pl-8 border-slate-200">
+            <p class="text-[10px] uppercase font-bold text-slate-400 tracking-widest mb-1">Difference</p>
+            <div class="text-lg font-mono text-on-surface font-bold text-emerald-600">₹ 0.00</div>
+         </div>
+      </div>
+    </div>
+
+    <div class="p-8 bg-surface-container/30 flex gap-4 justify-between border-t border-slate-100 dark:border-slate-800 items-center">
+      <div class="text-xs text-emerald-600 font-bold bg-emerald-50 px-3 py-1.5 rounded-lg flex items-center gap-1">
+         <span class="material-symbols-outlined text-sm">check_circle</span>
+         Entry is balanced
+      </div>
+      <div class="flex gap-4">
+         <button [routerLink]="['/transactions']" class="py-3 px-6 rounded-xl font-bold bg-white text-on-surface hover:bg-slate-50 transition-colors border border-slate-200">Cancel</button>
+         <button class="py-3 px-8 rounded-xl font-bold bg-primary text-white hover:bg-primary-container transition-colors shadow-lg shadow-primary/20 flex items-center gap-2">
+           <span class="material-symbols-outlined text-sm">send</span>
+           Post Entry
+         </button>
+      </div>
+    </div>
+  </div>
+</div>

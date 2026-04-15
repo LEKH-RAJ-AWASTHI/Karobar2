@@ -1,0 +1,15 @@
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Application/bin/Debug/net10.0/Karobar.Application.deps.json
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Application/bin/Debug/net10.0/Karobar.Application.dll
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Application/bin/Debug/net10.0/Karobar.Application.pdb
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Application/bin/Debug/net10.0/Karobar.Domain.dll
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Application/bin/Debug/net10.0/Karobar.Domain.pdb
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Application/obj/Debug/net10.0/Karobar.Application.csproj.AssemblyReference.cache
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Application/obj/Debug/net10.0/Karobar.Application.GeneratedMSBuildEditorConfig.editorconfig
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Application/obj/Debug/net10.0/Karobar.Application.AssemblyInfoInputs.cache
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Application/obj/Debug/net10.0/Karobar.Application.AssemblyInfo.cs
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Application/obj/Debug/net10.0/Karobar.Application.csproj.CoreCompileInputs.cache
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Application/obj/Debug/net10.0/Karobar..5E8662CA.Up2Date
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Application/obj/Debug/net10.0/Karobar.Application.dll
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Application/obj/Debug/net10.0/refint/Karobar.Application.dll
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Application/obj/Debug/net10.0/Karobar.Application.pdb
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Application/obj/Debug/net10.0/ref/Karobar.Application.dll

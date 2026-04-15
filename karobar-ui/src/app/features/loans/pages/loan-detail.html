@@ -1,0 +1,156 @@
+<div class="space-y-8 animate-fade-in-up" *ngIf="loan">
+    <div class="flex justify-between items-center bg-white p-6 rounded-3xl border border-slate-100 shadow-sm animate-fade-in-up">
+        <div class="flex items-center gap-6">
+            <div class="w-16 h-16 rounded-2xl bg-primary-fixed flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined text-4xl">account_balance</span>
+            </div>
+            <div>
+                <div class="text-[10px] uppercase tracking-widest font-bold text-secondary mb-1">Loan Account</div>
+                <h2 class="text-3xl font-bold tracking-tight text-on-surface">{{ loan.farmerName }}</h2>
+            </div>
+        </div>
+        <div class="text-right">
+            <div class="text-[10px] uppercase font-bold text-slate-400 tracking-widest">Loan Status</div>
+            <span [class.bg-emerald-50]="loan.status === 'Active'" [class.text-emerald-600]="loan.status === 'Active'"
+                class="px-3 py-1.5 rounded-xl text-xs font-bold uppercase mt-2 inline-block">
+                {{ loan.status }}
+            </span>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2 space-y-8">
+            <div class="bg-surface-container-lowest rounded-3xl shadow-sm border border-outline-variant/10 overflow-hidden">
+                <div class="p-8 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-on-surface">Loan Summary</h3>
+                    <div class="text-xs font-semibold text-slate-500 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">calendar_month</span>
+                        Opened: {{ loan.startDate | date }}
+                    </div>
+                </div>
+                <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-end border-b border-dashed border-slate-200 pb-3">
+                            <span class="text-sm font-medium text-slate-500">Principal Issued</span>
+                            <span class="text-lg font-bold text-on-surface">₹{{ loan.principalAmount | number:'1.2-2'
+                                }}</span>
+                        </div>
+                        <div class="flex justify-between items-end border-b border-dashed border-slate-200 pb-3">
+                            <span class="text-sm font-medium text-slate-500">Interest Rate</span>
+                            <span class="text-lg font-bold text-primary">{{ loan.interestRate }}% <small
+                                    class="text-slate-400 font-normal">per year</small></span>
+                        </div>
+                        <div class="flex justify-between items-end border-b border-dashed border-slate-200 pb-3">
+                            <span class="text-sm font-medium text-slate-500">Total Repaid (Principal)</span>
+                            <span class="text-lg font-bold text-emerald-600">₹{{ loan.totalPaid | number:'1.2-2'
+                                }}</span>
+                        </div>
+                    </div>
+                    <div class="bg-primary/5 rounded-2xl p-6 flex flex-col justify-center">
+                        <div class="text-[10px] uppercase tracking-widest font-bold text-primary mb-2">Remaining
+                            Principal</div>
+                        <div class="text-4xl font-bold text-primary">₹{{ loan.outstandingBalance | number:'1.2-2' }}</div>
+                        <p class="text-xs text-primary/60 mt-3 font-medium">Original loan amount minus all payments
+                            collected to date.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timeline -->
+            <div class="bg-surface-container-lowest rounded-3xl shadow-sm border border-outline-variant/10 overflow-hidden">
+                <div class="p-8 border-b border-slate-100 bg-slate-50">
+                    <h3 class="text-xl font-bold text-on-surface">Loan History Timeline</h3>
+                </div>
+                <div class="p-8">
+                    <div class="relative pl-8 border-l-2 border-primary-fixed ml-4 space-y-8">
+                        <div *ngFor="let event of loan.events; let i = index" class="relative">
+                            <span [class.bg-primary]="event.type === 'LoanGiven'"
+                                [class.bg-emerald-500]="event.type === 'Payment'"
+                                class="absolute -left-[41px] top-0 w-8 h-8 rounded-full border-4 border-white shadow-sm flex items-center justify-center text-white">
+                                <span class="material-symbols-outlined text-sm">{{ event.type === 'LoanGiven' ?
+                                    'add_circle' : 'payments' }}</span>
+                            </span>
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 flex justify-between items-center group hover:border-primary-fixed/50 transition-colors">
+                                <div>
+                                    <div class="text-xs font-bold text-slate-400 uppercase tracking-wide">{{ event.date | date:'mediumDate' }}</div>
+                                    <div class="font-bold text-on-surface mt-1">{{ event.type === 'LoanGiven' ? 'Principal Disbursed' : 'Payment Received' }}</div>
+                                </div>
+                                <div class="text-right">
+                                    <div [class.text-primary]="event.type === 'LoanGiven'" [class.text-emerald-600]="event.type === 'Payment'" class="text-lg font-bold tabular-nums">
+                                        {{ event.type === 'LoanGiven' ? '+' : '-' }} ₹{{ event.amount | number:'1.2-2' }}
+                                    </div>
+                                    <div class="text-[10px] font-medium text-slate-400 mt-1 uppercase">{{ event.type }} Ref: #{{ event.id | slice:0:8 }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar / Interest Calculation -->
+        <div class="space-y-8">
+            <div class="bg-surface-container-lowest rounded-3xl shadow-sm border border-outline-variant/10 overflow-hidden">
+                <div class="p-6 border-b border-slate-100 bg-slate-50">
+                    <h3 class="font-bold text-on-surface">Add Payment</h3>
+                </div>
+                <form [formGroup]="paymentForm" (ngSubmit)="onAddPayment()" class="p-6 space-y-4">
+                    <div class="space-y-1">
+                        <label class="text-[10px] uppercase font-bold text-slate-400">Payment Amount</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold">₹</span>
+                            <input formControlName="amount" type="number" class="w-full bg-surface-container-low border-none rounded-xl py-3 pl-8 pr-4 font-bold text-on-surface outline-none focus:ring-2 focus:ring-primary-fixed transition-all" placeholder="0.00">
+                        </div>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-[10px] uppercase font-bold text-slate-400">Date Collected</label>
+                        <input formControlName="date" type="date" class="w-full bg-surface-container-low border-none rounded-xl py-3 px-4 font-medium text-on-surface outline-none focus:ring-2 focus:ring-primary-fixed transition-all cursor-pointer">
+                    </div>
+                    <button [disabled]="submittingPayment || paymentForm.invalid" class="w-full bg-emerald-600 text-white rounded-xl py-3 font-bold shadow-lg shadow-emerald-600/20 hover:bg-emerald-700 transition-colors disabled:opacity-50">
+                        Record Payment
+                    </button>
+                </form>
+            </div>
+
+            <!-- Interest Accrual -->
+            <div class="bg-surface-container-lowest rounded-3xl shadow-sm border border-outline-variant/10 overflow-hidden">
+                <div class="p-6 border-b border-slate-100 bg-slate-50">
+                    <h3 class="font-bold text-on-surface">Interest Accrual</h3>
+                </div>
+                <div class="p-6 space-y-6">
+                    <div class="space-y-3">
+                        <label class="text-[10px] uppercase font-bold text-slate-400">Calculate Until</label>
+                        <div class="flex gap-2">
+                            <input [(ngModel)]="calculateUntilDate" type="date" class="flex-1 bg-surface-container-low border-none rounded-xl py-3 px-4 font-medium text-on-surface outline-none focus:ring-2 focus:ring-primary-fixed transition-all cursor-pointer">
+                            <button (click)="onCalculateInterest()" [disabled]="calculating" class="bg-primary text-white p-3 rounded-xl shadow-lg shadow-primary/20 hover:bg-primary-container transition-colors disabled:opacity-50">
+                                <span *ngIf="!calculating" class="material-symbols-outlined">refresh</span>
+                                <span *ngIf="calculating" class="animate-spin material-symbols-outlined">autorenew</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div *ngIf="interestResult" class="space-y-4 animate-fade-in-up">
+                        <div class="p-4 rounded-xl bg-amber-50/50 border border-amber-100/50">
+                            <div class="text-[10px] uppercase font-bold text-amber-600/80 mb-1">Accrued Interest</div>
+                            <div class="text-2xl font-bold text-amber-700">₹{{ interestResult.accruedInterest | number:'1.2-2' }}</div>
+                        </div>
+
+                        <div class="p-4 rounded-xl bg-primary-fixed-dim/20 border border-primary-fixed/20">
+                            <div class="text-[10px] uppercase font-bold text-primary mb-1">Total Outstanding</div>
+                            <div class="text-2xl font-bold text-on-primary-fixed-variant">₹{{ interestResult.totalOwed | number:'1.2-2' }}</div>
+                        </div>
+                        
+                        <p class="text-[10px] text-slate-400 italic">
+                            Calculated daily based on reducing principal balance between transactions.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="loading" class="flex flex-col items-center justify-center p-20">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
+    <p class="text-slate-400 font-medium">Fetching loan account details...</p>
+</div>

@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Karobar.Application/Karobar.Application.csproj" />
+    <Project Path="src/Karobar.Domain/Karobar.Domain.csproj" />
+    <Project Path="src/Karobar.Infrastructure/Karobar.Infrastructure.csproj" />
+    <Project Path="src/Karobar.WebAPI/Karobar.WebAPI.csproj" />
+  </Folder>
+</Solution>

@@ -1,0 +1,17 @@
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Infrastructure/bin/Debug/net10.0/Karobar.Infrastructure.deps.json
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Infrastructure/bin/Debug/net10.0/Karobar.Infrastructure.dll
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Infrastructure/bin/Debug/net10.0/Karobar.Infrastructure.pdb
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Infrastructure/bin/Debug/net10.0/Karobar.Application.dll
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Infrastructure/bin/Debug/net10.0/Karobar.Domain.dll
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Infrastructure/bin/Debug/net10.0/Karobar.Application.pdb
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Infrastructure/bin/Debug/net10.0/Karobar.Domain.pdb
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Infrastructure/obj/Debug/net10.0/Karobar.Infrastructure.csproj.AssemblyReference.cache
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Infrastructure/obj/Debug/net10.0/Karobar.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Infrastructure/obj/Debug/net10.0/Karobar.Infrastructure.AssemblyInfoInputs.cache
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Infrastructure/obj/Debug/net10.0/Karobar.Infrastructure.AssemblyInfo.cs
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Infrastructure/obj/Debug/net10.0/Karobar.Infrastructure.csproj.CoreCompileInputs.cache
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Infrastructure/obj/Debug/net10.0/Karobar..960F2898.Up2Date
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Infrastructure/obj/Debug/net10.0/Karobar.Infrastructure.dll
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Infrastructure/obj/Debug/net10.0/refint/Karobar.Infrastructure.dll
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Infrastructure/obj/Debug/net10.0/Karobar.Infrastructure.pdb
+/Users/lekhrajawasthi/Documents/Practice Projects/karobar2/src/Karobar.Infrastructure/obj/Debug/net10.0/ref/Karobar.Infrastructure.dll
