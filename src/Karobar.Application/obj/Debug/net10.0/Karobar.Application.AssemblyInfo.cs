@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Karobar.Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9b0dda8fdc3aec3743b29cb6cf0ed8b6dd7ed44d")]
 [assembly: System.Reflection.AssemblyProductAttribute("Karobar.Application")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Karobar.Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
